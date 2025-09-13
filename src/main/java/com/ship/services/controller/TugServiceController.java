@@ -23,7 +23,7 @@ public class TugServiceController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TugServiceHeader header) {
         try {
             return ResponseEntity.ok(service.update(id, header));
