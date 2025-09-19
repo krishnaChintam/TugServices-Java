@@ -1,7 +1,10 @@
 package com.ship.services.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "TugServiceActivity")
@@ -15,7 +18,8 @@ public class TugServiceActivity {
     private String activityDate;   // Or LocalDate
 
     @Column(name = "ActivityTime", nullable = false)
-    private String activityTime;   // Or LocalTime
+    @JsonFormat(pattern = "HH:mm:ss")   // 👈 this ensures JSON shows only hh:mm:ss
+    private LocalTime activityTime;   // Or LocalTime
 
     @Column(name = "Description", nullable = false, length = 500)
     private String description;
@@ -41,11 +45,11 @@ public class TugServiceActivity {
         this.activityDate = activityDate;
     }
 
-    public String getActivityTime() {
+    public LocalTime getActivityTime() {
         return activityTime;
     }
 
-    public void setActivityTime(String activityTime) {
+    public void setActivityTime(LocalTime activityTime) {
         this.activityTime = activityTime;
     }
 
