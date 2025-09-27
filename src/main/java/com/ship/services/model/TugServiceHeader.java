@@ -1,6 +1,8 @@
 package com.ship.services.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,7 +25,7 @@ public class TugServiceHeader {
     @Column(name = "LocationName", nullable = false, length = 100)
     private String locationName;
 
-    @Column(name = "VesselId", nullable = false)
+    @Column(name = "VesselId", nullable = true)
     private Long vesselId;
 
     @Column(name = "VesselName", nullable = false, length = 100)
@@ -55,6 +57,18 @@ public class TugServiceHeader {
 
     @Column(name = "IsActive", nullable = false)
     private Integer isActive = 1;
+
+    @Column(name = "CreatedBy")
+    private String createdBy;
+
+    @Column(name = "CreatedDate")
+    private LocalDateTime createdDate;
+
+    @Column(name = "EditedBy")
+    private String editedBy;
+
+    @Column(name = "EditedDate")
+    private LocalDateTime editedDate;
 
     @OneToMany(mappedBy = "header", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TugServiceActivity> activities;
@@ -193,5 +207,37 @@ public class TugServiceHeader {
 
     public void setActivities(List<TugServiceActivity> activities) {
         this.activities = activities;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getEditedBy() {
+        return editedBy;
+    }
+
+    public void setEditedBy(String editedBy) {
+        this.editedBy = editedBy;
+    }
+
+    public LocalDateTime getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(LocalDateTime editedDate) {
+        this.editedDate = editedDate;
     }
 }

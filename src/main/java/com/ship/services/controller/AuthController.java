@@ -1,5 +1,6 @@
 package com.ship.services.controller;
 
+import com.ship.services.model.UserEntity;
 import com.ship.services.pojo.LoginRequest;
 import com.ship.services.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -18,15 +21,14 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        boolean isValid = authService.validateLogin(loginRequest.getUsername(), loginRequest.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        Optional<UserEntity> userOpt = authService.validateLogin(loginRequest.getUsername(), loginRequest.getPassword());
 
-        if (isValid) {
-            // Return 200 OK
-            return new ResponseEntity<>("Login successful!", HttpStatus.OK);
+        if (userOpt.isPresent()) {
+            return new ResponseEntity<>(userOpt.get(), HttpStatus.OK);
         } else {
-            // Return 500 Internal Server Error
-            return new ResponseEntity<>("Invalid username or password!", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Invalid username or password!", HttpStatus.UNAUTHORIZED);
         }
     }
+
 }

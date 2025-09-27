@@ -1,5 +1,6 @@
 package com.ship.services.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -13,9 +14,13 @@ public class UserEntity {
 
     private String username;
     private String email;
+    @JsonIgnore
     private String passwordHash;
     private String createBy;
     private LocalDateTime createDate;
+    private String role;
+    private String tugName;
+
 
     public Long getId() {
         return id;
@@ -63,5 +68,21 @@ public class UserEntity {
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getTugName() {
+        return tugName;
+    }
+
+    public void setTugName(String tugName) {
+        this.tugName = tugName;
     }
 }
