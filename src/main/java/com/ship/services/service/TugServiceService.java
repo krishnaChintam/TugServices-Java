@@ -78,4 +78,11 @@ public class TugServiceService {
             throw new RuntimeException("Error listing TugServiceHeaders: " + ex.getMessage(), ex);
         }
     }
+    public List<TugServiceHeader> getByCreatedUser(String username) {
+        try {
+            return headerRepo.findByCreatedBy(username);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error listing TugServiceHeaders: " + ex.getMessage(), ex);
+        }
+    }
 }

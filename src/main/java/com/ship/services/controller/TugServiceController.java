@@ -52,4 +52,21 @@ public class TugServiceController {
             return ResponseEntity.badRequest().body("Error listing TugServiceHeaders: " + ex.getMessage());
         }
     }
+
+    @GetMapping("getByUsername/{username}")
+    public ResponseEntity<?> getByUsername(@PathVariable String username) {
+        try {
+            List<TugServiceHeader> list = service.getByCreatedUser(username);
+
+            if (list == null || list.isEmpty()) {
+                return ResponseEntity.status(404).body("No records found for user: " + username);
+            }
+
+            return ResponseEntity.ok(list);
+
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest()
+                    .body("Error fetching TugServiceHeaders for user " + username + ": " + ex.getMessage());
+        }
+    }
 }
