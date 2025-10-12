@@ -48,6 +48,8 @@ public class TugServiceService {
                 existing.setServiceRemarks(newHeader.getServiceRemarks());
                 existing.setRemarks(newHeader.getRemarks());
                 existing.setIsActive(newHeader.getIsActive());
+                existing.setTugName(newHeader.getTugName());
+                existing.setMotherVessel(newHeader.getMotherVessel());
 
                 existing.getActivities().clear();
                 if (newHeader.getActivities() != null) {

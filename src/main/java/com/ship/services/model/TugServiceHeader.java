@@ -16,6 +16,12 @@ public class TugServiceHeader {
     @Column(name = "RefNo", nullable = false, unique = true, length = 50)
     private String refNo;
 
+    @Column(name = "TugName", nullable = true)
+    private String tugName;
+
+    @Column(name = "MotherVessel", nullable = true)
+    private String motherVessel;
+
     @Column(name = "ServiceDate", nullable = false)
     private String serviceDate;   // You can use LocalDate if preferred
 
@@ -239,5 +245,21 @@ public class TugServiceHeader {
 
     public void setEditedDate(LocalDateTime editedDate) {
         this.editedDate = editedDate;
+    }
+
+    public String getTugName() {
+        return tugName;
+    }
+
+    public void setTugName(String tugName) {
+        this.tugName = tugName;
+    }
+
+    public String getMotherVessel() {
+        return motherVessel;
+    }
+
+    public void setMotherVessel(String motherVessel) {
+        this.motherVessel = motherVessel;
     }
 }
