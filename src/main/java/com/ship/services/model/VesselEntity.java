@@ -89,6 +89,8 @@ public class VesselEntity {
     @Column(name = "PackageId")
     private Integer packageId;
 
+    @Column(name = "IsMotherVessel")
+    private Integer isMotherVessel;
     // Default constructor
     public VesselEntity() {
     }
@@ -300,6 +302,14 @@ public class VesselEntity {
 
     public void setPackageId(Integer packageId) {
         this.packageId = packageId;
+    }
+
+    public Integer getIsMotherVessel() {
+        return isMotherVessel;
+    }
+
+    public void setIsMotherVessel(Integer isMotherVessel) {
+        this.isMotherVessel = isMotherVessel;
     }
 }
 
