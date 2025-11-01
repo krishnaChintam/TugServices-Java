@@ -2,11 +2,16 @@ package com.ship.services.service;
 
 import com.ship.services.model.TugServiceActivity;
 import com.ship.services.model.TugServiceHeader;
+import com.ship.services.model.VesselEntity;
 import com.ship.services.repo.TugServiceHeaderRepository;
+import com.ship.services.repo.VesselRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +20,49 @@ public class TugServiceService {
     @Autowired
     private TugServiceHeaderRepository headerRepo;
 
+    @Autowired
+    private VesselService vesselService;
+
+    @Autowired
+    private VesselRepository vesselRepository;
+
     @Transactional
     public TugServiceHeader save(TugServiceHeader header) {
         try {
+            // Check if vessel exists
+            VesselEntity existingVessel = vesselService.findByVesselName(header.getVesselName());
+            // If not found, create a new record in AdmVessel
+            if (existingVessel == null && header.getVesselName() != null && !header.getVesselName().trim().isEmpty()) {
+                VesselEntity newVessel = new VesselEntity();
+                newVessel.setVesselName(header.getVesselName());
+                newVessel.setVesselId(vesselRepository.getNextVesselId());
+                newVessel.setImoCode(header.getImoCode());
+                newVessel.setVesselType(header.getVesselType());
+                newVessel.setVesselCode(header.getVesselName());
+                newVessel.setLoa(header.getLengthOverall());
+                newVessel.setBranchId(1L);
+                newVessel.setIsMotherVessel(0);
+                newVessel.setBargeId(1L);
+                newVessel.setArrDraft("");
+                newVessel.setCallSign("");
+                newVessel.setDwt("");
+                newVessel.setFlag("");
+                newVessel.setGrt("");
+                newVessel.setMappingCode("");
+                newVessel.setNrt("");
+                newVessel.setRemarks("");
+                newVessel.setVesselTypeId(1L);
+                newVessel.setBuildDate(LocalDateTime.now());
+                newVessel.setValueAmount(BigDecimal.ZERO);
+                newVessel.setCurrencyId(1L);
+                newVessel.setPackageId(0);
+                newVessel.setIsActive(true);
+                newVessel.setCreateDate(LocalDateTime.now());
+                newVessel.setCreateBy("System");
+                newVessel.setEditBy("System");
+                newVessel.setEditDate(LocalDateTime.now());
+                vesselService.save(newVessel);
+            }
             if (header.getActivities() != null) {
                 for (TugServiceActivity act : header.getActivities()) {
                     act.setHeader(header);
@@ -85,6 +130,13 @@ public class TugServiceService {
             return headerRepo.findByCreatedBy(username);
         } catch (Exception ex) {
             throw new RuntimeException("Error listing TugServiceHeaders: " + ex.getMessage(), ex);
+        }
+    }
+    public List<TugServiceHeader> getByDateRange(String fromDate, String toDate) {
+        try {
+            return headerRepo.findByServiceDateBetween(fromDate, toDate);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error fetching TugServiceHeaders by date range: " + ex.getMessage(), ex);
         }
     }
 }

@@ -64,4 +64,17 @@ public class TugServiceController {
                     .body("Error fetching TugServiceHeaders for user " + username + ": " + ex.getMessage());
         }
     }
+    @GetMapping("/date-range")
+    public ResponseEntity<?> getByDateRange(
+            @RequestParam String fromDate,
+            @RequestParam String toDate) {
+        try {
+            List<TugServiceHeader> list = service.getByDateRange(fromDate, toDate);
+            return ResponseEntity.ok(list);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest()
+                    .body("Error fetching TugServiceHeaders by date range: " + ex.getMessage());
+        }
+    }
+
 }

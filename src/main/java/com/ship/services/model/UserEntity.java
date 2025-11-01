@@ -1,6 +1,7 @@
 package com.ship.services.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,13 +15,21 @@ public class UserEntity {
 
     private String username;
     private String email;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
+    @Column(updatable = false)
     private String createBy;
+    @Column(updatable = false)
     private LocalDateTime createDate;
     private String role;
     private String tugName;
+    @Column(name = "IsActive", nullable = false)
+    private Integer isActive = 1;
+    @Column(name = "EditedBy",insertable = false)
+    private String editedBy;
 
+    @Column(name = "EditedDate",insertable = false)
+    private LocalDateTime editedDate;
 
     public Long getId() {
         return id;
@@ -84,5 +93,29 @@ public class UserEntity {
 
     public void setTugName(String tugName) {
         this.tugName = tugName;
+    }
+
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getEditedBy() {
+        return editedBy;
+    }
+
+    public void setEditedBy(String editedBy) {
+        this.editedBy = editedBy;
+    }
+
+    public LocalDateTime getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(LocalDateTime editedDate) {
+        this.editedDate = editedDate;
     }
 }

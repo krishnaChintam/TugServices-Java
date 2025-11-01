@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VesselService {
@@ -13,6 +14,16 @@ public class VesselService {
     private VesselRepository vesselRepository;
 
     public List<VesselEntity> getAllVessels() {
+
         return vesselRepository.findAll();
+    }
+
+    public VesselEntity findByVesselName(String vesselName) {
+        Optional<VesselEntity> vesselOpt = vesselRepository.findByVesselNameIgnoreCase(vesselName);
+        return vesselOpt.orElse(null);
+    }
+
+    public VesselEntity save(VesselEntity vessel) {
+        return vesselRepository.save(vessel);
     }
 }
