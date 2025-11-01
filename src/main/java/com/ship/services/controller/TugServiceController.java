@@ -43,27 +43,6 @@ public class TugServiceController {
         }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<?> listAll() {
-        try {
-            List<TugServiceHeader> list = service.listAll();
-            return ResponseEntity.ok(list);
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().body("Error listing TugServiceHeaders: " + ex.getMessage());
-        }
-    }
-
-    @GetMapping("getByUsername/{username}")
-    public ResponseEntity<?> getByUsername(@PathVariable String username) {
-        try {
-            List<TugServiceHeader> list = service.getByCreatedUser(username);
-            return ResponseEntity.ok(list);
-
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest()
-                    .body("Error fetching TugServiceHeaders for user " + username + ": " + ex.getMessage());
-        }
-    }
     @GetMapping("/date-range")
     public ResponseEntity<?> getByDateRange(
             @RequestParam String fromDate,
@@ -74,6 +53,42 @@ public class TugServiceController {
         } catch (Exception ex) {
             return ResponseEntity.badRequest()
                     .body("Error fetching TugServiceHeaders by date range: " + ex.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> listAll(
+            @RequestParam(required = false) String fromDate,
+            @RequestParam(required = false) String toDate) {
+        try {
+            List<TugServiceHeader> list;
+            if (fromDate != null && toDate != null) {
+                list = service.getByDateRange(fromDate, toDate);
+            } else {
+                list = service.listAll();
+            }
+            return ResponseEntity.ok(list);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Error listing TugServiceHeaders: " + ex.getMessage());
+        }
+    }
+
+    @GetMapping("getByUsername/{username}")
+    public ResponseEntity<?> getByUsername(
+            @PathVariable String username,
+            @RequestParam(required = false) String fromDate,
+            @RequestParam(required = false) String toDate) {
+        try {
+            List<TugServiceHeader> list;
+            if (fromDate != null && toDate != null) {
+                list = service.getByUsernameAndDateRange(username, fromDate, toDate);
+            } else {
+                list = service.getByCreatedUser(username);
+            }
+            return ResponseEntity.ok(list);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest()
+                    .body("Error fetching TugServiceHeaders for user " + username + ": " + ex.getMessage());
         }
     }
 

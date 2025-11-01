@@ -16,4 +16,14 @@ public interface TugServiceHeaderRepository extends JpaRepository<TugServiceHead
     List<TugServiceHeader> findByServiceDateBetween(
             @Param("fromDate") String fromDate,
             @Param("toDate") String toDate);
+
+    @Query("SELECT t FROM TugServiceHeader t " +
+            "WHERE t.createdBy = :username " +
+            "AND t.serviceDate BETWEEN :fromDate AND :toDate " +
+            "ORDER BY t.serviceDate DESC")
+    List<TugServiceHeader> findByCreatedByAndServiceDateBetween(
+            @Param("username") String username,
+            @Param("fromDate") String fromDate,
+            @Param("toDate") String toDate);
+
 }

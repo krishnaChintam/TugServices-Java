@@ -139,4 +139,12 @@ public class TugServiceService {
             throw new RuntimeException("Error fetching TugServiceHeaders by date range: " + ex.getMessage(), ex);
         }
     }
+    public List<TugServiceHeader> getByUsernameAndDateRange(String username, String fromDate, String toDate) {
+        try {
+            return headerRepo.findByCreatedByAndServiceDateBetween(username, fromDate, toDate);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error fetching TugServiceHeaders by user and date range: " + ex.getMessage(), ex);
+        }
+    }
+
 }
