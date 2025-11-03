@@ -25,6 +25,9 @@ public class AuthController {
         Optional<UserEntity> userOpt = authService.validateLogin(loginRequest.getUsername(), loginRequest.getPassword());
 
         if (userOpt.isPresent()) {
+            if(userOpt.get().getIsActive() == 0){
+                return new ResponseEntity<>("User account is inactive.Please contact admin", HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity<>(userOpt.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Invalid username or password!", HttpStatus.UNAUTHORIZED);

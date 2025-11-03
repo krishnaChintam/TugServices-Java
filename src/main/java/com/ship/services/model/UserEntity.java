@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,6 +31,15 @@ public class UserEntity {
 
     @Column(name = "EditedDate",insertable = false)
     private LocalDateTime editedDate;
+
+    @Column(name = "NoOfHours")
+    private Integer noOfHours = 0;
+
+    @Column(name = "PackageCost")
+    private BigDecimal packageCost;
+
+    @Column(name = "PerHourCost")
+    private BigDecimal perHourCost;
 
     public Long getId() {
         return id;
@@ -117,5 +127,29 @@ public class UserEntity {
 
     public void setEditedDate(LocalDateTime editedDate) {
         this.editedDate = editedDate;
+    }
+
+    public Integer getNoOfHours() {
+        return noOfHours;
+    }
+
+    public void setNoOfHours(Integer noOfHours) {
+        this.noOfHours = noOfHours;
+    }
+
+    public BigDecimal getPackageCost() {
+        return packageCost;
+    }
+
+    public void setPackageCost(BigDecimal packageCost) {
+        this.packageCost = packageCost;
+    }
+
+    public BigDecimal getPerHourCost() {
+        return perHourCost;
+    }
+
+    public void setPerHourCost(BigDecimal perHourCost) {
+        this.perHourCost = perHourCost;
     }
 }

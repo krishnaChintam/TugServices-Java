@@ -33,7 +33,7 @@ public class UserService {
 
             // Set mandatory audit fields
             userEntity.setCreateDate(LocalDateTime.now());
-            userEntity.setCreateBy("ADMIN");
+            userEntity.setCreateBy("Admin");
 
             return userRepository.save(userEntity);
         } catch (Exception ex) {
@@ -72,7 +72,10 @@ public class UserService {
             user.setTugName(userDetails.getTugName());
             user.setIsActive(userDetails.getIsActive());
             user.setEditedDate(LocalDateTime.now());
-            user.setEditedBy("ADMIN");
+            user.setEditedBy("Admin");
+            user.setNoOfHours(userDetails.getNoOfHours());
+            user.setPackageCost(userDetails.getPackageCost());
+            user.setPerHourCost(userDetails.getPerHourCost());
 
             // Only update password if a new one is provided
             if (userDetails.getPasswordHash() != null && !userDetails.getPasswordHash().isEmpty()) {
