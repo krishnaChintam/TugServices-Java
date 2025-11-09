@@ -95,6 +95,8 @@ public class TugServiceService {
                 existing.setIsActive(newHeader.getIsActive());
                 existing.setTugName(newHeader.getTugName());
                 existing.setMotherVessel(newHeader.getMotherVessel());
+                existing.setPairWith(newHeader.getPairWith());
+                existing.setCommandRankAndName(newHeader.getCommandRankAndName());
 
                 existing.getActivities().clear();
                 if (newHeader.getActivities() != null) {

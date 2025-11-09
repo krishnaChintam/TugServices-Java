@@ -76,6 +76,12 @@ public class TugServiceHeader {
     @Column(name = "EditedDate")
     private LocalDateTime editedDate;
 
+    @Column(name = "PairWith")
+    private String pairWith;
+
+    @Column(name = "CommandRankAndName")
+    private String commandRankAndName;
+
     @OneToMany(mappedBy = "header", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TugServiceActivity> activities;
 
@@ -261,5 +267,21 @@ public class TugServiceHeader {
 
     public void setMotherVessel(String motherVessel) {
         this.motherVessel = motherVessel;
+    }
+
+    public String getPairWith() {
+        return pairWith;
+    }
+
+    public void setPairWith(String pairWith) {
+        this.pairWith = pairWith;
+    }
+
+    public String getCommandRankAndName() {
+        return commandRankAndName;
+    }
+
+    public void setCommandRankAndName(String commandRankAndName) {
+        this.commandRankAndName = commandRankAndName;
     }
 }
