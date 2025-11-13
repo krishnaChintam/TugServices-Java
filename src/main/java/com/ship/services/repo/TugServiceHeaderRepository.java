@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TugServiceHeaderRepository extends JpaRepository<TugServiceHeader, Long> {
     List<TugServiceHeader> findByCreatedBy(String createBy);
@@ -25,5 +26,6 @@ public interface TugServiceHeaderRepository extends JpaRepository<TugServiceHead
             @Param("username") String username,
             @Param("fromDate") String fromDate,
             @Param("toDate") String toDate);
+    Optional<TugServiceHeader> findByRefNo(String refNo);
 
 }

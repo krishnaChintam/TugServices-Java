@@ -1,8 +1,10 @@
 package com.ship.services.controller;
 
+import com.ship.services.exception.DuplicateRefNoException;
 import com.ship.services.model.TugServiceHeader;
 import com.ship.services.service.TugServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ public class TugServiceController {
     public ResponseEntity<?> save(@RequestBody TugServiceHeader header) {
         try {
             return ResponseEntity.ok(service.save(header));
+        } catch (DuplicateRefNoException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ex.getMessage());
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Error saving TugServiceHeader: " + ex.getMessage());
         }

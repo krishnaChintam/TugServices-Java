@@ -1,5 +1,6 @@
 package com.ship.services.service;
 
+import com.ship.services.exception.DuplicateRefNoException;
 import com.ship.services.model.TugServiceActivity;
 import com.ship.services.model.TugServiceHeader;
 import com.ship.services.model.VesselEntity;
@@ -29,6 +30,14 @@ public class TugServiceService {
     @Transactional
     public TugServiceHeader save(TugServiceHeader header) {
         try {
+
+            // Check if record already exists
+            Optional<TugServiceHeader> existing = headerRepo.findByRefNo(header.getRefNo());
+
+            if (existing.isPresent()) {
+                throw new DuplicateRefNoException("Record already exists with RefNo: " + header.getRefNo());
+            }
+
             // Check if vessel exists
             VesselEntity existingVessel = vesselService.findByVesselName(header.getVesselName());
             // If not found, create a new record in AdmVessel
@@ -69,7 +78,9 @@ public class TugServiceService {
                 }
             }
             return headerRepo.save(header);
-        } catch (Exception ex) {
+        } catch (DuplicateRefNoException ex) {
+            throw ex;
+        }catch (Exception ex) {
             throw new RuntimeException("Error saving TugServiceHeader: " + ex.getMessage(), ex);
         }
     }
