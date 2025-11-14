@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tug-services")
@@ -21,8 +22,12 @@ public class TugServiceController {
         try {
             return ResponseEntity.ok(service.save(header));
         } catch (DuplicateRefNoException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ex.getMessage());
+            return ResponseEntity.ok(
+                    Map.of(
+                            "error", true,
+                            "message", "Record already exists with RefNo: " + header.getRefNo()
+                    )
+            );
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Error saving TugServiceHeader: " + ex.getMessage());
         }
