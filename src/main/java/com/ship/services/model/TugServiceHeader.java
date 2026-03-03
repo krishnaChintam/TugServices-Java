@@ -37,13 +37,13 @@ public class TugServiceHeader {
     @Column(name = "VesselName", nullable = false, length = 100)
     private String vesselName;
 
-    @Column(name = "IMOCode", nullable = false, length = 20)
+    @Column(name = "IMOCode", length = 20)
     private String imoCode;
 
-    @Column(name = "VesselType", nullable = false, length = 50)
+    @Column(name = "VesselType", length = 50)
     private String vesselType;
 
-    @Column(name = "LengthOverall", nullable = false, length = 50)
+    @Column(name = "LengthOverall", length = 50)
     private String lengthOverall;
 
     @Column(name = "DraughtForward", length = 50)
