@@ -46,10 +46,10 @@ public class TugServiceHeader {
     @Column(name = "LengthOverall", nullable = false, length = 50)
     private String lengthOverall;
 
-    @Column(name = "DraughtForward", nullable = false, length = 50)
+    @Column(name = "DraughtForward", length = 50)
     private String draughtForward;
 
-    @Column(name = "DraughtAft", nullable = false, length = 50)
+    @Column(name = "DraughtAft", length = 50)
     private String draughtAft;
 
     @Column(name = "ServiceType", nullable = false, length = 200)
