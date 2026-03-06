@@ -26,6 +26,5 @@ public interface TugServiceHeaderRepository extends JpaRepository<TugServiceHead
             @Param("username") String username,
             @Param("fromDate") String fromDate,
             @Param("toDate") String toDate);
-    Optional<TugServiceHeader> findByRefNo(String refNo);
-
+    Optional<TugServiceHeader> findByRefNoAndIsActive(String refNo, Integer isActive);
 }

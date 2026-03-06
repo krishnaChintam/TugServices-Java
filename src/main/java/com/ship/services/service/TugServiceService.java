@@ -28,64 +28,6 @@ public class TugServiceService {
     private VesselRepository vesselRepository;
 
     @Transactional
-    public TugServiceHeader save(TugServiceHeader header) {
-        try {
-
-            // Check if record already exists
-            Optional<TugServiceHeader> existing = headerRepo.findByRefNo(header.getRefNo());
-
-            if (existing.isPresent()) {
-                throw new DuplicateRefNoException("Record already exists with RefNo: " + header.getRefNo());
-            }
-
-            // Check if vessel exists
-            VesselEntity existingVessel = vesselService.findByVesselName(header.getVesselName());
-            // If not found, create a new record in AdmVessel
-            if (existingVessel == null && header.getVesselName() != null && !header.getVesselName().trim().isEmpty()) {
-                VesselEntity newVessel = new VesselEntity();
-                newVessel.setVesselName(header.getVesselName());
-                newVessel.setVesselId(vesselRepository.getNextVesselId());
-                newVessel.setImoCode(header.getImoCode());
-                newVessel.setVesselType(header.getVesselType());
-                newVessel.setVesselCode(header.getVesselName());
-                newVessel.setLoa(header.getLengthOverall());
-                newVessel.setBranchId(1L);
-                newVessel.setIsMotherVessel(0);
-                newVessel.setBargeId(1L);
-                newVessel.setArrDraft("");
-                newVessel.setCallSign("");
-                newVessel.setDwt("");
-                newVessel.setFlag("");
-                newVessel.setGrt("");
-                newVessel.setMappingCode("");
-                newVessel.setNrt("");
-                newVessel.setRemarks("");
-                newVessel.setVesselTypeId(1L);
-                newVessel.setBuildDate(LocalDateTime.now());
-                newVessel.setValueAmount(BigDecimal.ZERO);
-                newVessel.setCurrencyId(1L);
-                newVessel.setPackageId(0);
-                newVessel.setIsActive(true);
-                newVessel.setCreateDate(LocalDateTime.now());
-                newVessel.setCreateBy("System");
-                newVessel.setEditBy("System");
-                newVessel.setEditDate(LocalDateTime.now());
-                vesselService.save(newVessel);
-            }
-            if (header.getActivities() != null) {
-                for (TugServiceActivity act : header.getActivities()) {
-                    act.setHeader(header);
-                }
-            }
-            return headerRepo.save(header);
-        } catch (DuplicateRefNoException ex) {
-            throw ex;
-        }catch (Exception ex) {
-            throw new RuntimeException("Error saving TugServiceHeader: " + ex.getMessage(), ex);
-        }
-    }
-
-    @Transactional
     public TugServiceHeader update(Long id, TugServiceHeader newHeader) {
         try {
             return headerRepo.findById(id).map(existing -> {
@@ -138,6 +80,7 @@ public class TugServiceService {
             throw new RuntimeException("Error listing TugServiceHeaders: " + ex.getMessage(), ex);
         }
     }
+
     public List<TugServiceHeader> getByCreatedUser(String username) {
         try {
             return headerRepo.findByCreatedBy(username);
@@ -160,4 +103,61 @@ public class TugServiceService {
         }
     }
 
+    @Transactional
+    public TugServiceHeader save(TugServiceHeader header) {
+        try {
+
+            // Check if record already exists
+            Optional<TugServiceHeader> existing = headerRepo.findByRefNoAndIsActive(header.getRefNo(),1);
+
+            if (existing.isPresent()) {
+                throw new DuplicateRefNoException("Record already exists with RefNo: " + header.getRefNo());
+            }
+
+            // Check if vessel exists
+            VesselEntity existingVessel = vesselService.findByVesselName(header.getVesselName());
+            // If not found, create a new record in AdmVessel
+            if (existingVessel == null && header.getVesselName() != null && !header.getVesselName().trim().isEmpty()) {
+                VesselEntity newVessel = new VesselEntity();
+                newVessel.setVesselName(header.getVesselName());
+                newVessel.setVesselId(vesselRepository.getNextVesselId());
+                newVessel.setImoCode(header.getImoCode());
+                newVessel.setVesselType(header.getVesselType());
+                newVessel.setVesselCode(header.getVesselName());
+                newVessel.setLoa(header.getLengthOverall());
+                newVessel.setBranchId(1L);
+                newVessel.setIsMotherVessel(0);
+                newVessel.setBargeId(1L);
+                newVessel.setArrDraft("");
+                newVessel.setCallSign("");
+                newVessel.setDwt("");
+                newVessel.setFlag("");
+                newVessel.setGrt("");
+                newVessel.setMappingCode("");
+                newVessel.setNrt("");
+                newVessel.setRemarks("");
+                newVessel.setVesselTypeId(1L);
+                newVessel.setBuildDate(LocalDateTime.now());
+                newVessel.setValueAmount(BigDecimal.ZERO);
+                newVessel.setCurrencyId(1L);
+                newVessel.setPackageId(0);
+                newVessel.setIsActive(true);
+                newVessel.setCreateDate(LocalDateTime.now());
+                newVessel.setCreateBy("System");
+                newVessel.setEditBy("System");
+                newVessel.setEditDate(LocalDateTime.now());
+                vesselService.save(newVessel);
+            }
+            if (header.getActivities() != null) {
+                for (TugServiceActivity act : header.getActivities()) {
+                    act.setHeader(header);
+                }
+            }
+            return headerRepo.save(header);
+        } catch (DuplicateRefNoException ex) {
+            throw ex;
+        }catch (Exception ex) {
+            throw new RuntimeException("Error saving TugServiceHeader: " + ex.getMessage(), ex);
+        }
+    }
 }
